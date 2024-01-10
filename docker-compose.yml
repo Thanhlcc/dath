@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - SERVER_PORT = 3000
+      - POSTGRES_URL = jdbc:postgresql://13.212.104.114:5432/dath
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+    command: ["mvnw", "spring-boot:run"]
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=dath
+    volumes:
+      - postgres_data:/var/lib/postgres/data
+      - postgres_config:/etc/postgresql/postgresql.conf
+volumes:
+  postgres_data:
+  postgres_config:
+
